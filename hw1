@@ -1,0 +1,27 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import plotly.express as px
+import plotly.graph_objects as go
+
+df_data = pd.read_csv("./data/shootings.csv", index_col="id").reset_index(drop=True)
+df_data.sample(5)
+df_tmp = df_data["gender"].value_counts()
+df_tmp = df_tmp.to_frame().reset_index()
+df_tmp.columns = ["gender", "count"]
+fig = px.bar(df_tmp, x="gender", y="count", color="gender", title="Distribution of shootings by gender")
+fig.show()
+label = df_tmp["gender"]
+size = df_tmp["count"]
+
+trace = go.Pie(labels=label, values=size, hole = 0.2)
+
+data = [trace]
+layout = go.Layout(
+    title='Distribution of shootings by gender'
+)
+
+fig = go.Figure(data=data, layout=layout)
+fig.show()
+
